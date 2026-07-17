@@ -383,8 +383,8 @@ class ApiDispenser:
         return response
 
     def results_check(self,
-                     taskId:Optional[str],
-                     product_group_code:int) -> dict:
+                      taskId: Optional[str],
+                      product_group_code: int) -> dict:
         '''
         ### 8.4. Метод получения результирующих ID выгрузок данных
 Данный метод позволяет получить список результирующих идентификаторов выгрузок для скачивания сформированных файлов с данными.
@@ -393,16 +393,23 @@ class ApiDispenser:
 :param product_group_code: Циферное представление Товарной Группы. прим: `16` для `НСП`'''
         if taskId:
             self.taskId = taskId
-        URL = f'/dispenser/results/{taskId}?page=0?size=10?pg={str(product_group_code)}?task_ids=["{taskId}"]'
-        url = self.url_v3 + URL
+
+        url = self.url_v3 + f'/dispenser/results/{taskId}'
+
+        params = {
+            'page': 0,
+            'size': 10,
+            'pg': product_group_code,
+            'task_ids': json.dumps([taskId]),
+        }
 
         headers = {
             "Authorization": 'Bearer ' + self.token.value
         }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, params=params)
         return response
 
-    def tesults_zip(self,
+    def results_zip(self,
                     taskId:Optional[str],
                     product_group_code:int) -> dict:
         '''### 8.5. Метод получения ZIP-файла выгрузки
