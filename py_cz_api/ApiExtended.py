@@ -39,10 +39,14 @@ class ApiExtended(Api):
     def df_add_cis_info(self,
                         df:pd.DataFrame,
                         cis_col:str,
-                        cisInfoCols:list = ['status',
-                                            'ownerInn']
+                        cisInfoCols:list = None
                         ) -> pd.DataFrame:
         '''Добавляет в DataFrame столбцы из cisInfoCols'''
+        if cisInfoCols is None:
+            cisInfoCols = ['status', 'ownerInn']
+        else:
+            cisInfoCols = list(cisInfoCols)  # копия, чтобы не мутировать переданный список
+
         join_col = 'requestedCis'
         cisInfoCols.append(join_col)
         ans = self.cises_info(df[cis_col].to_list())
@@ -53,10 +57,14 @@ class ApiExtended(Api):
     async def df_add_cis_info_aio(self,
                         df:pd.DataFrame,
                         cis_col:str,
-                        cisInfoCols:list = ['status',
-                                            'ownerInn']
+                        cisInfoCols:list = None
                         ) -> pd.DataFrame:
         '''Добавляет в DataFrame столбцы из cisInfoCols'''
+        if cisInfoCols is None:
+            cisInfoCols = ['status', 'ownerInn']
+        else:
+            cisInfoCols = list(cisInfoCols)
+
         join_col = 'requestedCis'
         cisInfoCols.append(join_col)
         ans = await self.cises_info_aio(df[cis_col].to_list())
@@ -78,11 +86,14 @@ class ApiExtended(Api):
     def df_add_cis_short_info(self,
                         df:pd.DataFrame,
                         cis_col:str,
-                        cisInfoCols:list = ['status',
-                                            'ownerInn',
-                                            'receiptDate']
+                        cisInfoCols:list = None
                         ) -> pd.DataFrame:
         '''Добавляет в DataFrame столбцы из cisInfoCols'''
+        if cisInfoCols is None:
+            cisInfoCols = ['status', 'ownerInn', 'receiptDate']
+        else:
+            cisInfoCols = list(cisInfoCols)
+
         join_col = 'requestedCis'
         cisInfoCols.append(join_col)
         ans = self.cises_short_list(df[cis_col].to_list())
@@ -93,11 +104,14 @@ class ApiExtended(Api):
     async def df_add_cis_short_info_aio(self,
                         df:pd.DataFrame,
                         cis_col:str,
-                        cisInfoCols:list = ['status',
-                                            'ownerInn',
-                                            'receiptDate']
+                        cisInfoCols:list = None
                         ) -> pd.DataFrame:
         '''Добавляет в DataFrame столбцы из cisInfoCols'''
+        if cisInfoCols is None:
+            cisInfoCols = ['status', 'ownerInn', 'receiptDate']
+        else:
+            cisInfoCols = list(cisInfoCols)
+
         join_col = 'requestedCis'
         cisInfoCols.append(join_col)
         ans = await self.cises_short_list_aio(df[cis_col].to_list())
