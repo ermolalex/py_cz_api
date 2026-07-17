@@ -53,7 +53,7 @@ class Token:
         return f'TimeLeft: {self.time_left}'
 
     def __str__(self) -> str:
-        return Token.value
+        return self.value
 
     @staticmethod
     def create_from_cert(Certificate: Certificate) -> 'Token':
