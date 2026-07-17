@@ -24,6 +24,9 @@ class Api:
         self.url_v3, self.url_v4, self.stand = URLStand(product_env).get_urls()
         self.Token = Token
         self._last_request_time = 0
+        self._rate_semaphore = asyncio.Semaphore(50)
+        self._rate_lock = asyncio.Lock()
+                     
 
     def gtin_info(self, gtin_list:list) -> dict:    #TODO q = 1 000 split
         '''### 5.5.1. Метод получения информации о товаре по GTIN товара
@@ -93,8 +96,8 @@ class Api:
             return flattened_list
 
     async def _fetch(self, session, url, headers, json_string):
-        async with asyncio.Semaphore(50):
-            async with asyncio.Lock():
+        async with self._rate_semaphore:
+            async with self._rate_lock:
                 current_time = time.time()
                 elapsed_time = current_time - self._last_request_time
                 if elapsed_time < 0.02:
