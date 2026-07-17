@@ -15,7 +15,7 @@ def show_certs() -> dict:
     Store = Dispatch('CAdESCOM.Store')
     Store.Open(2, 'My', 2)
     cert_dict = {cert.serialnumber: cert.SubjectName for cert in Store.Certificates}
-    Store.Close
+    Store.Close()
     return cert_dict
 
 def _find_Cert(serialnumber: str):
